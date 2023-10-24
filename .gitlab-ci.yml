@@ -4,6 +4,7 @@ stages:
     - deploy
 
 before_script:
+    - flutter upgrade -f
     - flutter clean
     - flutter pub get
     - flutter pub upgrade
