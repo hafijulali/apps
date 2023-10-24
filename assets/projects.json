@@ -1,0 +1,130 @@
+[
+  {
+    "id": 1,
+    "name": "OpenTodo",
+    "description": "A Free and Open Source, multi-platform Todo application that can save todos over cloud and sync them across devices.",
+    "image": "open-todo.png",
+    "demo": "https://hafijulali.gitlab.io/open-todo",
+    "source": "https://gitlab.com/hafijulali/open-todo"
+  },
+  {
+    "id": 2,
+    "name": "ByteAdvice",
+    "description": "A simple application to get a random advice from remote advices api.",
+    "image": "byte-advice.png",
+    "demo": "https://hafijulali.gitlab.io/byte-advice",
+    "source": "https://gitlab.com/hafijulali/byte-advice"
+  },
+  {
+    "id": 3,
+    "name": "Face Mask Detector",
+    "description": "Sodshihsdfihs",
+    "image": "face-mask-detector.png",
+    "demo": "",
+    "source": "https://gitlab.com/hafijulali/face-mask-detector"
+  },
+  {
+    "id": 4,
+    "name": "Smart Water Level Monitor",
+    "description": "Sodshihsdfihs",
+    "image": "smart-water-level-monitor.png",
+    "demo": "https://smart-water-level-monitor.gitlab.io/website/",
+    "source": "https://gitlab.com/smart-water-level-monitor/firmware"
+  },
+  {
+    "id": 5,
+    "name": "CLI 2048 Game",
+    "description": "Command line Interface version of popular 2048 Game written in python.",
+    "image": "cli-2048-game.png",
+    "demo": "https://replit.com/@hafijul/CLI-2048-Game?v=1",
+    "source": "https://gitlab.com/hafijulali/cli-2048-game"
+  },
+  {
+    "id": 6,
+    "name": "2048 Game",
+    "description": "Popular 2048 Game written in python and PySimpleGUI as ui library.",
+    "image": "2048-game.png",
+    "demo": "https://replit.com/@hafijul/2048-Game?v=1",
+    "source": "https://gitlab.com/hafijulali/2048-game"
+  },
+  {
+    "id": 7,
+    "name": "Rock Paper Scissors",
+    "description": "Web based version of popular Rock Paper Scissors game written in python.",
+    "image": "rock-paper-scissors-game.png",
+    "demo": "https://rpsg.deta.dev/",
+    "source": "https://gitlab.com/hafijulali/rock-paper-scissors-game"
+  },
+  {
+    "id": 8,
+    "name": "Resumify",
+    "description": "Create your resume, just by filling a few details.",
+    "image": "resumify.png",
+    "demo": "https://resumify.hafijulali.repl.co/",
+    "source": "https://gitlab.com/hafijulali/resumify"
+  },
+  {
+    "id": 9,
+    "name": "CLI Tic Tac Toe Game",
+    "description": "Command line Interface version of popular Tic Tac Toe Game written in python.",
+    "image": "cli-tic-tac-toe-game.png",
+    "demo": "https://replit.com/@hafijul/CLI-Tic-Tac-Toe-Game?v=1",
+    "source": "https://gitlab.com/hafijulali/cli-tic-tac-toe-game"
+  },
+  {
+    "id": 10,
+    "name": "Tic Tac Toe Game",
+    "description": "Popular Tic Tac Toe Game written in python and PySimpleGUI as ui library.",
+    "image": "tic-tac-toe-game.png",
+    "demo": "https://tttg.deta.dev/",
+    "source": "https://gitlab.com/hafijulali/tic-tac-toe-game"
+  },
+  {
+    "id": 11,
+    "name": "CLI Todo App",
+    "description": "A simple, cli todo tool written in python. Written to be simple yet has quite handy features.",
+    "image": "cli-todo-app.png",
+    "demo": "https://replit.com/@hafijul/CLI-Todo-App?v=1",
+    "source": "https://gitlab.com/hafijulali/cli-todo-app"
+  },
+  {
+    "id": 12,
+    "name": "Obstacle Avoiding Robot",
+    "description": "Sodshihsdfihs",
+    "image": "obstacle-avoiding-robot.png",
+    "demo": "https://obstacle-avoiding-robot.gitlab.io/website/",
+    "source": "https://gitlab.com/obstacle-avoiding-robot/firmware"
+  },
+  {
+    "id": 13,
+    "name": "Greeter",
+    "description": "A dynamic greetings generator app to greet others on different events.",
+    "image": "greeter.png",
+    "demo": "https://greeter.hafijulali.repl.co",
+    "source": "https://gitlab.com/hafijulali/greeter"
+  },
+  {
+    "id": 14,
+    "name": "FLAMES Game",
+    "description": "A dynamic greetings generator app to greet others on different events.",
+    "image": "flames-game.png",
+    "demo": "https://flames-game.deta.dev/",
+    "source": "https://gitlab.com/hafijulali/flames-game"
+  },
+  {
+    "id": 15,
+    "name": "Biped Robot",
+    "description": "A dynamic greetings generator app to greet others on different events.",
+    "image": "biped-robot.png",
+    "demo": "https://biped-robot.gitlab.io/website/",
+    "source": "https://gitlab.com/biped-robot/firmware"
+  },
+  {
+    "id": 16,
+    "name": "GuessMe",
+    "description": "A simple number guessing game based on binary search approach.",
+    "image": "guess-me.png",
+    "demo": "https://guessme.hafijulali.repl.co",
+    "source": "https://gitlab.com/hafijulali/guess-me"
+  }
+]

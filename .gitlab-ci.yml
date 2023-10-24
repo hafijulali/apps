@@ -1,0 +1,34 @@
+image: cirrusci/flutter:latest
+stages:
+    - build
+    - deploy
+
+before_script:
+    - flutter clean
+    - flutter pub get
+    - flutter pub upgrade
+
+pages:
+    stage: deploy
+    script:
+        - flutter build web --release --base-href /apps/
+        - cp -r build/web public
+    artifacts:
+        untracked: false
+        when: on_success
+        paths:
+            - public
+    only:
+        - master
+
+android:
+    stage: deploy
+    script:
+        - flutter build apk --release
+    artifacts:
+        untracked: false
+        when: on_success
+        paths:
+            - build/app/outputs/flutter-apk/app-release.apk
+    only:
+        - master
