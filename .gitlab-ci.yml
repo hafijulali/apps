@@ -4,8 +4,6 @@ stages:
     - deploy
 
 before_script:
-    - flutter channel stable
-    - flutter upgrade -f
     - flutter clean
     - flutter pub get
     - flutter pub upgrade
