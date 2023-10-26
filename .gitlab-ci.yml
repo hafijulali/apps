@@ -25,6 +25,10 @@ android:
     stage: deploy
     script:
         - flutter build apk --release
+        - pwd
+        - ls
+        - mkdir release
+        - cp build/app/outputs/flutter-apk/app-release.apk release
     artifacts:
         untracked: false
         when: on_success
