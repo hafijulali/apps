@@ -36,7 +36,7 @@
     "name": "CLI 2048 Game",
     "description": "Command line Interface version of popular 2048 Game written in python.",
     "image": "cli-2048-game.png",
-    "demo": "https://replit.com/@hafijul/CLI-2048-Game?v=1",
+    "demo": "",
     "source": "https://gitlab.com/hafijulali/cli-2048-game"
   },
   {
@@ -44,7 +44,7 @@
     "name": "2048 Game",
     "description": "Popular 2048 Game written in python and PySimpleGUI as ui library.",
     "image": "2048-game.png",
-    "demo": "https://replit.com/@hafijul/2048-Game?v=1",
+    "demo": "",
     "source": "https://gitlab.com/hafijulali/2048-game"
   },
   {
@@ -52,7 +52,7 @@
     "name": "Rock Paper Scissors",
     "description": "Web based version of popular Rock Paper Scissors game written in python.",
     "image": "rock-paper-scissors-game.png",
-    "demo": "https://rpsg.deta.dev/",
+    "demo": "",
     "source": "https://gitlab.com/hafijulali/rock-paper-scissors-game"
   },
   {
@@ -60,7 +60,7 @@
     "name": "Resumify",
     "description": "Create your resume, just by filling a few details.",
     "image": "resumify.png",
-    "demo": "https://resumify.hafijulali.repl.co/",
+    "demo": "",
     "source": "https://gitlab.com/hafijulali/resumify"
   },
   {
@@ -68,7 +68,7 @@
     "name": "CLI Tic Tac Toe Game",
     "description": "Command line Interface version of popular Tic Tac Toe Game written in python.",
     "image": "cli-tic-tac-toe-game.png",
-    "demo": "https://replit.com/@hafijul/CLI-Tic-Tac-Toe-Game?v=1",
+    "demo": "",
     "source": "https://gitlab.com/hafijulali/cli-tic-tac-toe-game"
   },
   {
@@ -76,7 +76,7 @@
     "name": "Tic Tac Toe Game",
     "description": "Popular Tic Tac Toe Game written in python and PySimpleGUI as ui library.",
     "image": "tic-tac-toe-game.png",
-    "demo": "https://tttg.deta.dev/",
+    "demo": "",
     "source": "https://gitlab.com/hafijulali/tic-tac-toe-game"
   },
   {
@@ -84,7 +84,7 @@
     "name": "CLI Todo App",
     "description": "A simple, cli todo tool written in python. Written to be simple yet has quite handy features.",
     "image": "cli-todo-app.png",
-    "demo": "https://replit.com/@hafijul/CLI-Todo-App?v=1",
+    "demo": "",
     "source": "https://gitlab.com/hafijulali/cli-todo-app"
   },
   {
@@ -100,7 +100,7 @@
     "name": "Greeter",
     "description": "A dynamic greetings generator app to greet others on different events.",
     "image": "greeter.png",
-    "demo": "https://greeter.hafijulali.repl.co",
+    "demo": "",
     "source": "https://gitlab.com/hafijulali/greeter"
   },
   {
@@ -108,7 +108,7 @@
     "name": "FLAMES Game",
     "description": "A dynamic greetings generator app to greet others on different events.",
     "image": "flames-game.png",
-    "demo": "https://flames-game.deta.dev/",
+    "demo": "",
     "source": "https://gitlab.com/hafijulali/flames-game"
   },
   {
@@ -116,7 +116,7 @@
     "name": "Biped Robot",
     "description": "A dynamic greetings generator app to greet others on different events.",
     "image": "biped-robot.png",
-    "demo": "https://biped-robot.gitlab.io/website/",
+    "demo": "",
     "source": "https://gitlab.com/biped-robot/firmware"
   },
   {
@@ -124,7 +124,7 @@
     "name": "GuessMe",
     "description": "A simple number guessing game based on binary search approach.",
     "image": "guess-me.png",
-    "demo": "https://guessme.hafijulali.repl.co",
+    "demo": "",
     "source": "https://gitlab.com/hafijulali/guess-me"
   }
 ]

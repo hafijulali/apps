@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'alert_dialog.dart';
 import 'app.dart';
 
 class HomePage extends StatefulWidget {
@@ -50,8 +51,8 @@ class _HomePageState extends State<HomePage> {
             backgroundColor: Colors.black45,
             title: const Center(child: Text(' ')),
             subtitle: const Text(' '),
-            leading: IconButton(
-              tooltip: 'Source Code',
+            leading: TextButton.icon(
+              label: const Text('Source Code'),
               icon: const Icon(
                 Icons.code_outlined,
                 semanticLabel: 'Source Code',
@@ -61,14 +62,19 @@ class _HomePageState extends State<HomePage> {
                   {await launchUrl(Uri.parse(data[index]['source']))}
               },
             ),
-            trailing: IconButton(
-              tooltip: 'Demo',
+            trailing: TextButton.icon(
+              label: const Text('Demo'),
               icon: const Icon(
                 Icons.crop_landscape,
               ),
               onPressed: () async => {
                 if (await canLaunchUrl(Uri.parse(data[index]['demo'])))
                   {await launchUrl(Uri.parse(data[index]['demo']))}
+                else
+                  {
+                    showAlertDialog(context, 'Error',
+                        'Cannot launch demo, maybe a native application or it is currently down!')
+                  }
               },
             ),
           ),
@@ -102,40 +108,3 @@ class _HomePageState extends State<HomePage> {
         ),
       );
 }
-//         child: Row(
-//           children: <Widget>[
-//             Container(
-//               width: 100,
-//               height: 100,
-//               child: InkWell(
-//                 child: Container(
-//                   decoration: BoxDecoration(
-//                       borderRadius: BorderRadius.circular(15),
-//                       image: DecorationImage(
-//                           image: AssetImage('assets/${data[index]['image']}'))),
-//                 ),
-//               ),
-//             ),
-//             Column(children: <Widget>[
-//               Expanded(
-//                 child: InkWell(
-//                   child: Container(
-//                     decoration: BoxDecoration(
-//                         borderRadius: BorderRadius.circular(15),
-//                         image: DecorationImage(
-//                             image:
-//                                 AssetImage('assets/${data[index]['image']}'))),
-//                     child: Text(data.elementAt(index)['name']),
-//                   ),
-//                 ),
-//               ),
-//             ]),
-//             // Container(R
-//             //   decoration: const BoxDecoration(
-//             //     image: DecorationImage(image: NetworkImage("https://pixlok.com/wp-content/uploads/2021/05/flutter-logo.jpg")),
-//             //   ),
-//             // )
-//           ],
-//         ),
-//       );
-// }
