@@ -1,54 +1,50 @@
 name: apps
-description: A project that displays information about other projects
-
-# Prevent accidental publishing to pub.dev.
-publish_to: 'none'
-
-version: 1.0.0+1
-
+version: 1.5.0
+publish_to: none
 environment:
-  sdk: '>=3.1.3 <4.0.0'
-
+  sdk: ">=3.1.3 <4.0.0"
+description: A project that displays information about other projects
 dependencies:
+  dio: ^5.7.0
   flutter:
     sdk: flutter
+  flutter_dotenv: ^5.2.1
   flutter_launcher_icons: ^0.14.3
   flutter_localizations:
     sdk: flutter
+  hive_ce: ^2.10.1
+  hive_ce_flutter: ^2.2.0
+  packer:
+    git: https://gitlab.com/hafijulali/packer
   url_launcher: ^6.1.14
-
 dev_dependencies:
+  flutter_lints: ^5.0.0
   flutter_test:
     sdk: flutter
-
-  flutter_lints: ^5.0.0
-
+  hive_ce_generator: ^1.8.1
+  lints: ^5.0.0
+  pubspec_dependency_sorter: ^1.0.3
 flutter:
   uses-material-design: true
-
-  # Enable generation of localized Strings from arb files.
   generate: true
-
   assets:
-    # Add assets from the images directory to the application.
     - assets/
     - assets/projects.json
-
+    - .env
 flutter_launcher_icons:
-  android: "launcher_icon"
+  android: launcher_icon
   ios: true
-  image_path: "assets/alive.png"
-  min_sdk_android: 16 # android min sdk min:16, default 21
+  image_path: assets/alive.png
+  min_sdk_android: 16
   web:
     generate: true
-    image_path: "web/favicon.png"
+    image_path: web/favicon.png
     background_color: "#000000"
     theme_color: "#fffff"
   windows:
     generate: true
-    image_path: "assets/alive.png"
-    icon_size: 48 # min:48, max:256, default: 48
+    image_path: assets/alive.png
+    icon_size: 48
   macos:
     generate: true
-    image_path: "assets/alive.png"
-
+    image_path: assets/alive.png

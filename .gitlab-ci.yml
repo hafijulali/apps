@@ -1,38 +1,36 @@
 image: ghcr.io/cirruslabs/flutter:latest
 stages:
-    - build
-    - deploy
+  - build
+  - deploy
 
 before_script:
-    - flutter clean
-    - flutter pub get
-    - flutter pub upgrade
+  - flutter clean
+  - flutter pub get
+  - flutter pub upgrade
 
 pages:
-    stage: deploy
-    script:
-        - flutter build web --release --base-href /apps/
-        - cp -r build/web public
-    artifacts:
-        untracked: false
-        when: on_success
-        paths:
-            - public
-    only:
-        - master
+  stage: deploy
+  script:
+    - flutter build web --release --base-href /apps/
+    - cp -r build/web public
+  artifacts:
+    untracked: false
+    when: on_success
+    paths:
+      - public
+  only:
+    - master
 
 android:
-    stage: deploy
-    script:
-        - flutter build apk --release
-        - pwd
-        - ls
-        - mkdir release
-        - cp build/app/outputs/flutter-apk/app-release.apk release
-    artifacts:
-        untracked: false
-        when: on_success
-        paths:
-            - build/app/outputs/flutter-apk/app-release.apk
-    only:
-        - master
+  stage: deploy
+  script:
+    - flutter build apk --release
+    - mkdir release
+    - cp build/app/outputs/flutter-apk/app-release.apk release
+  artifacts:
+    untracked: false
+    when: on_success
+    paths:
+      - build/app/outputs/flutter-apk/app-release.apk
+  only:
+    - master

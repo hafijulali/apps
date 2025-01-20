@@ -1,6 +1,6 @@
 # apps
 
-A project that displays information about other projects
+A project that displays information about other projects.
 
 ## Getting Started
 

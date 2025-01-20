@@ -1,17 +1,20 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'app.dart';
+import 'package:hive_ce/hive.dart';
+import 'package:packer/widgets/scaffold_key.dart';
 
-Future<List<dynamic>> getData() async {
-  final dynamic data =
-      json.decode(await rootBundle.loadString('assets/projects.json'));
-  return data;
-}
+import 'homepage.dart';
+import 'init.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  final List<dynamic> data = await getData();
-  runApp(App(data: data));
+Future<dynamic> main() async {
+  await initApp();
+  runApp(
+    StreamBuilder<BoxEvent>(
+      stream: cache!.watch(),
+      builder: (BuildContext context, AsyncSnapshot<BoxEvent> snapshot) =>
+          MaterialApp(
+        scaffoldMessengerKey: rootScaffoldMessengerKey,
+        home: const HomePage(),
+      ),
+    ),
+  );
 }
