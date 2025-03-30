@@ -19,7 +19,9 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
-          title: const Text(appTitle),
+          title: InkWell(
+              child: const Text(appTitle),
+              onTap: () async => await launchUrl(Uri.parse(appSourceCode))),
           centerTitle: true,
         ),
         body: FutureBuilder<List<Project>>(
