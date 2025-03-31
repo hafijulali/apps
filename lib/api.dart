@@ -1,11 +1,11 @@
 import 'dart:convert';
 
-import 'package:apps/data.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:packer/widgets/snack_bar.dart';
 
 import 'constants.dart';
+import 'data.dart';
 import 'init.dart';
 import 'model.dart';
 

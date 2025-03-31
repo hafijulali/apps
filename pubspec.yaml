@@ -16,6 +16,7 @@ dependencies:
   hive_ce_flutter: ^2.2.0
   packer:
     git: https://gitlab.com/hafijulali/packer
+  path_provider: ^2.1.5
   url_launcher: ^6.1.14
 dev_dependencies:
   flutter_lints: ^5.0.0

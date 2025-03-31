@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:apps/constants.dart';
-import 'package:apps/init.dart';
 import 'package:flutter/services.dart';
+
+import 'constants.dart';
+import 'init.dart';
 
 Future<List<dynamic>> getLocalData() async {
   final dynamic data =

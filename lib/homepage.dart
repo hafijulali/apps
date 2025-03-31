@@ -1,11 +1,13 @@
-import 'package:apps/init.dart';
 import 'package:flutter/material.dart';
+import 'package:packer/core/constants/constants.dart';
 import 'package:packer/widgets/alert_dialog.dart';
 import 'package:packer/widgets/snack_bar.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'api.dart';
+import 'app_bar.dart';
 import 'constants.dart';
+import 'init.dart';
 import 'model.dart';
 
 class HomePage extends StatefulWidget {
@@ -17,26 +19,30 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: InkWell(
-              child: const Text(appTitle),
-              onTap: () async => await launchUrl(Uri.parse(appSourceCode))),
-          centerTitle: true,
-        ),
-        body: FutureBuilder<List<Project>>(
-            future: fetchProjects(),
-            builder:
-                (BuildContext context, AsyncSnapshot<List<Project>> snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              } else {
-                return showDataInGridView(snapshot.data!);
-              }
-            }),
-      );
+  Widget build(BuildContext context) {
+    BaseConstants().currentPageRoute = BaseConstants().homePageRoute;
+    return Scaffold(
+      appBar: appBar(context),
+      body: FutureBuilder<List<Project>>(
+          future: fetchProjects(),
+          builder:
+              (BuildContext context, AsyncSnapshot<List<Project>> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else {
+              return showDataInGridView(snapshot.data!);
+            }
+          }),
+    );
+  }
 
   Widget showDataInGridView(List<Project> data) {
+    // INFO : Pesky hack to show single snackbar even if
+    // multiple images do not load
+    if (data[5].image == null) {
+      showSnackbar(
+          "Unable to load images, showing default app image see flutter#45955");
+    }
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
       child: GridView.builder(
@@ -123,7 +129,7 @@ class _HomePageState extends State<HomePage> {
       }
       return Image.asset('assets/${data[index].image}');
     }
-    showSnackbar("Unable to load images, showing default app image");
+    debugPrint("Unable to load images, showing default app image");
     return Image.asset('assets/alive.png');
   }
 
