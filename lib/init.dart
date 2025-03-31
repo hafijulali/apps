@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive_ce/hive.dart';
@@ -8,14 +9,16 @@ import 'constants.dart';
 import 'data.dart';
 
 Box<dynamic>? cache;
-String databaseFilePath = '';
+String databaseFilePath = appTitle;
 String gitlabToken = '';
 String appVersion = '';
 String appThemeMode = 'System';
 
 Future<void> initApp() async {
   WidgetsFlutterBinding.ensureInitialized();
-  databaseFilePath = (await getApplicationDocumentsDirectory()).path;
+  if (!kIsWeb) {
+    databaseFilePath = (await getApplicationDocumentsDirectory()).path;
+  }
   await dotenv.load(fileName: ".env");
   Hive.init(databaseFilePath);
   setupCacheExpiry(durationMinutes: 5);
