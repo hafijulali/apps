@@ -13,7 +13,6 @@ pages:
   stage: deploy
   script:
     - flutter build web --release --base-href /apps/ --wasm --dart-define-from-file=.env
-    - rm build/web/assets/.env
     - cp -r build/web public
   artifacts:
     untracked: false
