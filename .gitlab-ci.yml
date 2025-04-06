@@ -12,7 +12,8 @@ before_script:
 pages:
   stage: deploy
   script:
-    - flutter build web --release --base-href /apps/
+    - flutter build web --release --base-href /apps/ --wasm --dart-define-from-file=.env
+    - rm build/web/assets/.env
     - cp -r build/web public
   artifacts:
     untracked: false
@@ -25,13 +26,13 @@ pages:
 android:
   stage: deploy
   script:
-    - flutter build apk --release
-    - mkdir release
-    - cp build/app/outputs/flutter-apk/app-release.apk release
+    - flutter build apk --release --dart-define-from-file=.env --obfuscate --split-per-abi --split-debug-info .debug
   artifacts:
     untracked: false
     when: on_success
     paths:
-      - build/app/outputs/flutter-apk/app-release.apk
+      - build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+      - build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+      - build/app/outputs/flutter-apk/app-x86_64-release.apk
   only:
     - master

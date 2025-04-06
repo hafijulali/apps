@@ -25,5 +25,7 @@ Future<void> initApp() async {
   BaseConstants().currentPageRoute = BaseConstants().homePageRoute;
 
   cache = await Hive.openBox<dynamic>(cacheDatabaseName);
-  gitlabToken = dotenv.get('GITLAB_TOKEN');
+  const token = String.fromEnvironment(
+      'GITLAB_TOKEN'); // INFO : Sring.fromEnvironment must be used within const expression
+  gitlabToken = token;
 }
