@@ -11,8 +11,6 @@ import 'model.dart';
 
 Future<List<Project>> fetchProjects() async {
   List<Project> projects = <Project>[];
-  List<dynamic> github = [];
-  List<dynamic> gitlab = [];
 
   if (cache?.containsKey(projectsCacheDatabasekey) == true) {
     debugPrint("Loading data from cache");
@@ -25,6 +23,8 @@ Future<List<Project>> fetchProjects() async {
   }
 
   final Dio dio = Dio();
+  List<dynamic> github = [];
+  List<dynamic> gitlab = [];
 
   try {
     final Response<dynamic> githubResponse = await dio.get(

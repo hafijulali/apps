@@ -7,12 +7,14 @@ before_script:
   - flutter clean
   - flutter pub get
   - flutter pub upgrade
+  - flutter pub add flutter_cors
+  - $HOME/.pub-cache/bin/fluttercors --disable
   - echo "$ENV" > .env
 
 pages:
   stage: deploy
   script:
-    - flutter build web --release --wasm -O4 --base-href /apps/ --dart-define-from-file=.env
+    - flutter build web --release --wasm -O4 --base-href /apps/
     - cp -r build/web public
   artifacts:
     untracked: false
@@ -27,7 +29,7 @@ pages:
 android:
   stage: deploy
   script:
-    - flutter build apk --release --dart-define-from-file=.env --obfuscate --split-per-abi --split-debug-info .debug
+    - flutter build apk --release --obfuscate --split-per-abi --split-debug-info .debug
   artifacts:
     untracked: false
     when: on_success
