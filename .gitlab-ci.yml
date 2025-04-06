@@ -12,7 +12,8 @@ before_script:
 pages:
   stage: deploy
   script:
-    - flutter build web --release --base-href /apps/ --wasm --dart-define-from-file=.env
+    - flutter build web --release --wasm -O4 --base-href /apps/ --dart-define-from-file=.env ||
+      flutter build web --release --wasm -O4 --base-href /apps/ --dart-define=GITLAB_TOKEN="$ENV"
     - cp -r build/web public
   artifacts:
     untracked: false
@@ -21,6 +22,8 @@ pages:
       - public
   only:
     - master
+    - dev
+    - nightly
 
 android:
   stage: deploy
@@ -35,3 +38,5 @@ android:
       - build/app/outputs/flutter-apk/app-x86_64-release.apk
   only:
     - master
+    - dev
+    - nightly
