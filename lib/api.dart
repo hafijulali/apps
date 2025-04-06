@@ -11,6 +11,8 @@ import 'model.dart';
 
 Future<List<Project>> fetchProjects() async {
   List<Project> projects = <Project>[];
+  List<dynamic> github = [];
+  List<dynamic> gitlab = [];
 
   if (cache?.containsKey(projectsCacheDatabasekey) == true) {
     debugPrint("Loading data from cache");
@@ -29,7 +31,13 @@ Future<List<Project>> fetchProjects() async {
       'https://api.github.com/users/$username/repos',
       queryParameters: <String, dynamic>{'per_page': 10, 'sort': 'updated'},
     );
+    github =
+        (githubResponse.data).map((proj) => Project.fromGitHub(proj)).toList();
+  } on Exception catch (e) {
+    debugPrint("Unable to load github projects $e");
+  }
 
+  try {
     final Response<dynamic> gitlabResponse = await dio.get(
       'https://gitlab.com/api/v4/projects',
       queryParameters: <String, dynamic>{
@@ -42,19 +50,20 @@ Future<List<Project>> fetchProjects() async {
       options: Options(
           headers: <String, String>{'Authorization': 'Bearer $gitlabToken'}),
     );
-    List<dynamic> github =
-        (githubResponse.data).map((proj) => Project.fromGitHub(proj)).toList();
-    List<dynamic> gitlab =
-        (gitlabResponse.data).map((proj) => Project.fromGitLab(proj)).toList();
 
+    gitlab =
+        (gitlabResponse.data).map((proj) => Project.fromGitLab(proj)).toList();
+  } on Exception catch (e) {
+    debugPrint("Unable to load gitlab projects $e");
+  }
+
+  try {
     projects = [...gitlab, ...github];
     int currentTime = DateTime.now().millisecondsSinceEpoch;
     await cache?.put(dataEntryCacheDatabaseKey, currentTime);
     await cache?.put(projectsCacheDatabasekey, jsonEncode(projects));
-  } on DioException catch (e) {
-    debugPrint('Network exception $e');
   } on Exception catch (e) {
-    debugPrint('Error fetching projects: $e');
+    debugPrint('Error saving projects: $e');
   }
   if (projects.isEmpty) {
     showSnackbar(

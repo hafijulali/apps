@@ -12,8 +12,7 @@ before_script:
 pages:
   stage: deploy
   script:
-    - flutter build web --release --wasm -O4 --base-href /apps/ --dart-define-from-file=.env ||
-      flutter build web --release --wasm -O4 --base-href /apps/ --dart-define=GITLAB_TOKEN="$ENV"
+    - flutter build web --release --wasm -O4 --base-href /apps/ --dart-define-from-file=.env
     - cp -r build/web public
   artifacts:
     untracked: false
