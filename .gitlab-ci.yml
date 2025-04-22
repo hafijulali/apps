@@ -1,4 +1,14 @@
 image: ghcr.io/cirruslabs/flutter:latest
+
+variables:
+  FLUTTER_CHANNEL: "stable"
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - .pub-cache/
+    - build/
+
 stages:
   - build
   - deploy
@@ -7,15 +17,12 @@ before_script:
   - flutter clean
   - flutter pub get
   - flutter pub upgrade
-  - flutter pub add flutter_cors
-  - dart pub global activate flutter_cors
-  - $HOME/.pub-cache/bin/fluttercors --disable
   - echo "$ENV" > .env
 
 pages:
-  stage: deploy
+  stage: build
   script:
-    - flutter build web --release --wasm -O4 --base-href /apps/
+    - flutter build web --release --wasm -O4 --base-href /${CI_PROJECT_NAME}/
     - cp -r build/web public
   artifacts:
     untracked: false
@@ -24,12 +31,10 @@ pages:
       - public
   only:
     - master
-    - dev
     - nightly
-    - cors
 
 android:
-  stage: deploy
+  stage: build
   script:
     - flutter build apk --release --obfuscate --split-per-abi --split-debug-info .debug
   artifacts:
@@ -41,5 +46,67 @@ android:
       - build/app/outputs/flutter-apk/app-x86_64-release.apk
   only:
     - master
-    - dev
+    - nightly
+
+ios:
+  stage: build
+  tags:
+    - gitlab-org
+    - macos
+    - saas-macos-large-m2pro
+    - gitlab-org-docker
+  script:
+    - flutter build ios --release --no-codesign
+  artifacts:
+    paths:
+      - build/ios/
+    expire_in: 1 week
+  only:
+    - master
+    - nightly
+
+linux:
+  stage: build
+  script:
+    - sudo apt-get update -y && sudo apt-get install -y clang cmake ninja-build pkg-config libgtk-3-dev
+    - flutter config --enable-linux-desktop
+    - flutter build linux --release
+  artifacts:
+    paths:
+      - build/linux/
+  only:
+    - master
+    - nightly
+
+windows:
+  stage: build
+  tags:
+    - windows
+    - gitlab-org
+    - gitlab-org-docker
+  script:
+    - flutter config --enable-windows-desktop
+    - flutter build windows --release
+  artifacts:
+    paths:
+      - build/windows/
+  only:
+    - master
+    - nightly
+
+macos:
+  stage: build
+  tags:
+    - macos
+    - saas-macos-large-m2pro
+    - gitlab-org
+    - gitlab-org-docker
+  script:
+    - flutter config --enable-macos-desktop
+    - flutter build macos --release
+  artifacts:
+    paths:
+      - build/macos/
+  only:
+    - master
     - nightly
