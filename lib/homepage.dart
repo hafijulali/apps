@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:packer/core/constants/constants.dart';
 import 'package:packer/widgets/alert_dialog.dart';
 import 'package:packer/widgets/snack_bar.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import 'api.dart';
 import 'app_bar.dart';
@@ -79,9 +79,19 @@ class _HomePageState extends State<HomePage> {
               Icons.code_outlined,
               semanticLabel: 'Source Code',
             ),
-            onPressed: () async => {
-              if (await canLaunchUrl(Uri.parse(data[index].source)))
-                {await launchUrl(Uri.parse(data[index].source))}
+            onPressed: () async {
+              final String sourceUrl = data[index].source;
+              if (await canLaunchUrlString(sourceUrl) == true) {
+                debugPrint(
+                    "Launching sourceUrl $sourceUrl with mode $launchMode");
+                await launchUrlString(sourceUrl,
+                    mode: launchMode, webOnlyWindowName: webWindowName);
+              } else {
+                if (mounted) {
+                  showAlertDialog(context, 'Error',
+                      'Unable to open source code link at the moment, please visit $sourceUrl in browser');
+                }
+              }
             },
           ),
           trailing: TextButton.icon(
@@ -90,15 +100,15 @@ class _HomePageState extends State<HomePage> {
               Icons.crop_landscape,
             ),
             onPressed: () async {
-              String? demoUrl = data[index].demo;
-              if (demoUrl != null) {
-                if (await canLaunchUrl(Uri.parse(demoUrl))) {
-                  await launchUrl(Uri.parse(demoUrl));
-                } else {
-                  if (mounted) {
-                    showAlertDialog(context, 'Error',
-                        'Cannot launch demo, maybe a native application or it is currently down!');
-                  }
+              final String demoUrl = data[index].demo ?? '';
+              if (await canLaunchUrlString(demoUrl) == true) {
+                debugPrint("Launching demoUrl $demoUrl with mode $launchMode");
+                await launchUrlString(demoUrl,
+                    mode: launchMode, webOnlyWindowName: webWindowName);
+              } else {
+                if (mounted) {
+                  showAlertDialog(context, 'Error',
+                      'Cannot launch demo, maybe a native application or it is currently down!');
                 }
               }
             },

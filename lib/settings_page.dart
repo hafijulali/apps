@@ -19,6 +19,8 @@ class _SettingsPageState extends State<SettingsPage> {
     return <Widget>[
       _buildInfo(context),
       const SizedBox(height: 16),
+      _openLinksInNewTab(context),
+      const SizedBox(height: 16),
     ];
   }
 
@@ -37,6 +39,20 @@ class _SettingsPageState extends State<SettingsPage> {
       leading: const Icon(Icons.mobile_friendly_outlined),
       title: Text('App Version : $appVersion'),
       onTap: () async => await launchUrlString(appCodebase),
+    );
+  }
+
+  SwitchListTile _openLinksInNewTab(BuildContext context) {
+    return SwitchListTile(
+      title: Text('Open links in new tab'),
+      value: openLinksInNewTab,
+      onChanged: (value) {
+        setState(() {
+          openLinksInNewTab = value;
+          settings?.put(openLinksInNewTabSettingsKey, value);
+          webWindowName = value ? '_blank' : '_self';
+        });
+      },
     );
   }
 

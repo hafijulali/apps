@@ -1,3 +1,5 @@
+import 'package:apps/constants.dart';
+
 class Project {
   final String id;
   final String name;
@@ -20,7 +22,7 @@ class Project {
         description: json['description'],
         source: json['html_url'],
         image: json['avatar_url'],
-        demo: 'GitHub',
+        demo: 'https://$username.github.io/${json['name']}',
       );
   factory Project.fromGitLab(Map<String, dynamic> json) => Project(
         id: json['id'].toString(),
@@ -28,7 +30,7 @@ class Project {
         description: json['description'],
         source: json['web_url'],
         image: json['avatar_url'],
-        demo: 'GitLab',
+        demo: 'https://$username.gitlab.io/${json['name']}',
       );
 
   Map<String, dynamic> toJson() => <String, dynamic>{
