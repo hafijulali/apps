@@ -1,0 +1,252 @@
+name: Build and Release Flutter App
+
+on:
+  push:
+    branches:
+      - master
+      - dev
+      - nightly
+  workflow_dispatch:
+
+jobs:
+  prepare-release:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.get_version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v3
+      - id: get_version
+        run: |
+          echo "version=$(grep 'version:' pubspec.yaml | sed 's/version: //' | tr -d '[:space:]')" >> $GITHUB_OUTPUT
+
+  build-android:
+    needs: prepare-release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+      - name: Create .env file
+        env:
+          DOTENV: ${{ secrets.ENV }}
+        run: echo "$DOTENV" > .env
+      - run: flutter pub get
+      - run: flutter build apk --release --obfuscate --split-per-abi --split-debug-info .debug
+      - uses: actions/upload-artifact@v3
+        with:
+          name: android-builds
+          path: |
+            build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+            build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+            build/app/outputs/flutter-apk/app-x86_64-release.apk
+
+  build-linux-x64:
+    needs: prepare-release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+      - name: Create .env file
+        env:
+          DOTENV: ${{ secrets.ENV }}
+        run: echo "$DOTENV" > .env
+      - run: |
+          sudo apt-get update -y
+          sudo apt-get install -y clang cmake ninja-build pkg-config libgtk-3-dev
+      - run: flutter config --enable-linux-desktop
+      - run: flutter pub get
+      - run: flutter build linux --release --target-platform linux-x64
+      - name: Archive build
+        run: tar -czf apps-linux-x64.tar.gz -C build/linux/x64/release/bundle .
+      - uses: actions/upload-artifact@v3
+        with:
+          name: linux-build-x64
+          path: apps-linux-x64.tar.gz
+
+  build-linux-arm64:
+    needs: prepare-release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: docker/setup-qemu-action@v2
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+      - name: Create .env file
+        env:
+          DOTENV: ${{ secrets.ENV }}
+        run: echo "$DOTENV" > .env
+      - name: Install ARM64 dependencies
+        run: |
+          sudo dpkg --add-architecture arm64
+          sudo apt-get update
+          sudo apt-get install -y clang cmake ninja-build pkg-config libgtk-3-dev:arm64
+      - run: flutter config --enable-linux-desktop
+      - run: flutter pub get
+      - run: flutter build linux --release --target-platform linux-arm64
+      - name: Archive build
+        run: tar -czf apps-linux-arm64.tar.gz -C build/linux/arm64/release/bundle .
+      - uses: actions/upload-artifact@v3
+        with:
+          name: linux-build-arm64
+          path: apps-linux-arm64.tar.gz
+
+  build-web:
+    needs: prepare-release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+      - name: Create .env file
+        env:
+          DOTENV: ${{ secrets.ENV }}
+        run: echo "$DOTENV" > .env
+      - run: flutter pub get
+      - run: flutter build web --release
+      - name: Archive build
+        run: zip -r apps-web.zip build/web
+      - uses: actions/upload-artifact@v3
+        with:
+          name: web-build
+          path: apps-web.zip
+
+  build-windows-x64:
+    needs: prepare-release
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+      - name: Create .env file
+        env:
+          DOTENV: ${{ secrets.ENV }}
+        run: echo "$DOTENV" > .env
+      - run: flutter config --enable-windows-desktop
+      - run: flutter pub get
+      - run: flutter build windows --release --target-platform windows-x64
+      - name: Archive build
+        shell: powershell
+        run: Compress-Archive -Path build/windows/x64/runner/Release/* -DestinationPath apps-windows-x64.zip
+      - uses: actions/upload-artifact@v3
+        with:
+          name: windows-build-x64
+          path: apps-windows-x64.zip
+
+  build-windows-arm64:
+    needs: prepare-release
+    runs-on: windows-latest-arm64
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+      - name: Create .env file
+        env:
+          DOTENV: ${{ secrets.ENV }}
+        run: echo "$DOTENV" > .env
+      - run: flutter config --enable-windows-desktop
+      - run: flutter pub get
+      - run: flutter build windows --release --target-platform windows-arm64
+      - name: Archive build
+        shell: powershell
+        run: Compress-Archive -Path build/windows/arm64/runner/Release/* -DestinationPath apps-windows-arm64.zip
+      - uses: actions/upload-artifact@v3
+        with:
+          name: windows-build-arm64
+          path: apps-windows-arm64.zip
+
+  build-macos:
+    needs: prepare-release
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+      - name: Create .env file
+        env:
+          DOTENV: ${{ secrets.ENV }}
+        run: echo "$DOTENV" > .env
+      - run: flutter config --enable-macos-desktop
+      - run: flutter pub get
+      - run: flutter build macos --release
+      - name: Archive build
+        run: zip -r apps-macos.zip build/macos/Build/Products/Release/apps.app
+      - uses: actions/upload-artifact@v3
+        with:
+          name: macos-build
+          path: apps-macos.zip
+
+  build-ios:
+    needs: prepare-release
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+      - name: Create .env file
+        env:
+          DOTENV: ${{ secrets.ENV }}
+        run: echo "$DOTENV" > .env
+      - run: flutter pub get
+      - run: flutter build ipa --release --no-codesign
+      - uses: actions/upload-artifact@v3
+        with:
+          name: ios-build
+          path: build/ios/ipa/apps.ipa
+
+  release:
+    runs-on: ubuntu-latest
+    needs:
+      [
+        prepare-release,
+        build-android,
+        build-linux-x64,
+        build-linux-arm64,
+        build-web,
+        build-windows-x64,
+        build-windows-arm64,
+        build-macos,
+        build-ios,
+      ]
+    steps:
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ needs.prepare-release.outputs.version }}
+          release_name: Release v${{ needs.prepare-release.outputs.version }}
+          draft: false
+          prerelease: false
+
+      - uses: actions/download-artifact@v3
+        with:
+          path: artifacts
+
+      - name: Display structure of downloaded files
+        run: ls -R artifacts
+
+      - name: Upload Release Assets
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ needs.prepare-release.outputs.version }}
+        run: |
+          gh release upload v$VERSION artifacts/android-builds/app-arm64-v8a-release.apk#apps-$VERSION-android-arm64.apk
+          gh release upload v$VERSION artifacts/android-builds/app-armeabi-v7a-release.apk#apps-$VERSION-android-armeabi-v7a.apk
+          gh release upload v$VERSION artifacts/android-builds/app-x86_64-release.apk#apps-$VERSION-android-x86_64.apk
+          gh release upload v$VERSION artifacts/linux-build-x64/apps-linux-x64.tar.gz#apps-$VERSION-linux-x64.tar.gz
+          gh release upload v$VERSION artifacts/linux-build-arm64/apps-linux-arm64.tar.gz#apps-$VERSION-linux-arm64.tar.gz
+          gh release upload v$VERSION artifacts/web-build/apps-web.zip#apps-$VERSION-web.zip
+          gh release upload v$VERSION artifacts/windows-build-x64/apps-windows-x64.zip#apps-$VERSION-windows-x64.zip
+          gh release upload v$VERSION artifacts/windows-build-arm64/apps-windows-arm64.zip#apps-$VERSION-windows-arm64.zip
+          gh release upload v$VERSION artifacts/macos-build/apps-macos.zip#apps-$VERSION-macos.zip
+          gh release upload v$VERSION artifacts/ios-build/apps.ipa#apps-$VERSION-ios.ipa

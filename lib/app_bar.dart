@@ -39,8 +39,8 @@ List<IconButton> _actions(BuildContext context) {
       icon: const Icon(Icons.refresh_outlined),
     ),
     IconButton(
-      onPressed: () async =>
-          safePush(context, BaseConstants().settingsPageRoute),
+      onPressed: () async => safePushNamed(context,
+          BaseConstants().currentPageRoute, BaseConstants().settingsPageRoute),
       icon: const Icon(Icons.settings_outlined),
     ),
   ];
