@@ -27,6 +27,7 @@ Future<void> initApp() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (!kIsWeb) {
     databaseFilePath = (await getApplicationDocumentsDirectory()).path;
+    debugPrint('Hive database file path: $databaseFilePath');
     launchMode = LaunchMode.inAppBrowserView;
     webWindowName = '';
   }

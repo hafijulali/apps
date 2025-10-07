@@ -21,7 +21,7 @@ before_script:
 pages:
   stage: build
   script:
-    - flutter build web --release --base-href /${CI_PROJECT_NAME}/
+    - flutter build web --release --wasm -O4 --base-href /${CI_PROJECT_NAME}/
     - cp -r build/web public
   artifacts:
     untracked: false

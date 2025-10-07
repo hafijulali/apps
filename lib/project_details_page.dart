@@ -103,6 +103,7 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                       } else if (snapshot.hasError) {
                         return Center(child: Text('Error: ${snapshot.error}'));
                       } else if (snapshot.hasData) {
+                        debugPrint('README.md content for rendering:\n${snapshot.data!.substring(0, snapshot.data!.length > 500 ? 500 : snapshot.data!.length)}...');
                         return MarkdownWidget(
                           data: snapshot.data!,
                           shrinkWrap: true,
