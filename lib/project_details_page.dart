@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:packer/widgets/alert_dialog.dart';
+import 'package:markdown_widget/markdown_widget.dart';
+
+import 'api.dart';
 import 'widgets/project_image.dart';
 import 'constants.dart';
 import 'init.dart';
@@ -16,6 +19,14 @@ class ProjectDetailsPage extends StatefulWidget {
 }
 
 class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
+  late Future<String> _readmeContentFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _readmeContentFuture = fetchReadmeContent(widget.project.source);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,6 +88,30 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                           child: const Text('View Demo'),
                         ),
                     ],
+                  ),
+                  const SizedBox(height: 24),
+                  Text(
+                    'README.md',
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
+                  const SizedBox(height: 16),
+                  FutureBuilder<String>(
+                    future: _readmeContentFuture,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Center(child: Text('Error: ${snapshot.error}'));
+                      } else if (snapshot.hasData) {
+                        return MarkdownWidget(
+                          data: snapshot.data!,
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                        );
+                      } else {
+                        return const Center(child: Text('No README found.'));
+                      }
+                    },
                   ),
                 ],
               ),
