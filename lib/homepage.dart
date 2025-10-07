@@ -28,21 +28,21 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     BaseConstants().currentPageRoute = BaseConstants().homePageRoute;
-    return Scaffold(
-      appBar: appBar(context, data: null), // Pass null initially
-      body: FutureBuilder<List<Project>>(
-          future: fetchProjects(),
-          builder:
-              (BuildContext context, AsyncSnapshot<List<Project>> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasError) {
-              return Center(child: Text('Error: ${snapshot.error}'));
-            } else {
-              final List<Project> projects = snapshot.data!;
-              return showDataInGridView(projects);
-            }
-          }),
+    return FutureBuilder<List<Project>>(
+      future: fetchProjects(),
+      builder: (BuildContext context, AsyncSnapshot<List<Project>> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else {
+          final List<Project> projects = snapshot.data!;
+          return Scaffold(
+            appBar: appBar(context, data: projects), // Pass fetched projects
+            body: showDataInGridView(projects),
+          );
+        }
+      },
     );
   }
 

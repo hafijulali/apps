@@ -24,9 +24,11 @@ class ModernSearchBar extends StatelessWidget {
               EdgeInsets.symmetric(horizontal: 16.0),
             ),
             onTap: () {
+              debugPrint('SearchBar onTap fired.');
               controller.openView();
             },
-            onChanged: (_) {
+            onChanged: (value) {
+              debugPrint('SearchBar onChanged: $value');
               controller.openView();
             },
             leading: const Icon(Icons.search),
@@ -36,13 +38,18 @@ class ModernSearchBar extends StatelessWidget {
         suggestionsBuilder:
             (BuildContext context, SearchController controller) {
           final String query = controller.text;
+          debugPrint('SuggestionsBuilder called. Current query: "$query"');
 
           final filteredProjects = projects.where((project) {
             final nameLower = project.name.toLowerCase();
             final descriptionLower = project.description?.toLowerCase() ?? '';
             final queryLower = query.toLowerCase();
-            return nameLower.contains(queryLower) ||
+            debugPrint('Searching for: "$queryLower"');
+            debugPrint('Checking project: ${project.name} (Name: "$nameLower", Description: "$descriptionLower")');
+            final bool matches = nameLower.contains(queryLower) ||
                 descriptionLower.contains(queryLower);
+            debugPrint('Project ${project.name} matches: $matches');
+            return matches;
           }).toList();
 
           return List<ListTile>.generate(filteredProjects.length, (int index) {
@@ -50,7 +57,6 @@ class ModernSearchBar extends StatelessWidget {
             return ListTile(
               title: Text(project.name),
               onTap: () {
-                controller.closeView(project.name);
                 Navigator.push(
                   context,
                   MaterialPageRoute(

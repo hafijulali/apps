@@ -16,6 +16,9 @@ Future<dynamic> main() async {
           MaterialApp(
         scaffoldMessengerKey: rootScaffoldMessengerKey,
         home: const HomePage(),
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
         routes: <String, WidgetBuilder>{
           BaseConstants().homePageRoute: (_) => HomePage(),
           BaseConstants().settingsPageRoute: (_) => SettingsPage()
