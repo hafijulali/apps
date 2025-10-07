@@ -16,14 +16,16 @@ class Project {
       required this.source,
       this.image});
 
-  factory Project.fromGitHub(Map<String, dynamic> json) => Project(
-        id: json["id"].toString(),
-        name: json['name'],
-        description: json['description'],
-        source: json['html_url'],
-        image: json['avatar_url'],
-        demo: 'https://$username.github.io/${json['name']}',
-      );
+  factory Project.fromGitHub(Map<String, dynamic> json) {
+    return Project(
+      id: json["id"].toString(),
+      name: json['name'],
+      description: json['description'],
+      source: json['html_url'],
+      image: null, // Always set image to null for GitHub projects to force random Gravatar
+      demo: 'https://$username.github.io/${json['name']}',
+    );
+  }
   factory Project.fromGitLab(Map<String, dynamic> json) => Project(
         id: json['id'].toString(),
         name: json['name'],
@@ -50,4 +52,11 @@ class Project {
         image: json['image'],
         demo: json['demo'],
       );
+}
+
+String? _getGitHubOpenGraphImageUrl(String fullName) {
+  if (fullName.isEmpty) {
+    return null;
+  }
+  return 'https://opengraph.githubassets.com/1/$fullName';
 }

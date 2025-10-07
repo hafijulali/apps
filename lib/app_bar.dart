@@ -1,3 +1,4 @@
+import 'package:apps/model.dart';
 import 'package:flutter/material.dart';
 import 'package:packer/core/constants/constants.dart';
 import 'package:packer/navigation/navigate.dart';
@@ -7,16 +8,20 @@ import '../../../init.dart';
 import 'api.dart';
 import 'search_bar.dart';
 
-AppBar appBar(BuildContext context) {
+AppBar appBar(BuildContext context,
+    {List<Project>? data, bool showSearch = true}) {
   return AppBar(
-    title: Center(
-        child: searchBar(context, () {
-      showSnackbar(BaseConstants().currentPageRoute);
-    },
-            TextEditingController(),
-            (BaseConstants().currentPageRoute.isNotEmpty)
-                ? BaseConstants().currentPageRoute.substring(1)
-                : 'HomePage')),
+    elevation: 0,
+    backgroundColor: Colors.transparent,
+    title: showSearch
+        ? ModernSearchBar(
+            projects: data ?? [], // Pass an empty list if data is null
+            hintText: (BaseConstants().currentPageRoute.isNotEmpty)
+                ? 'Search in ${BaseConstants().currentPageRoute.substring(1)}'
+                : 'Search',
+          )
+        : null,
+    centerTitle: true,
     leading: IconButton(
       icon: const Icon(Icons.arrow_back_outlined),
       onPressed: () {

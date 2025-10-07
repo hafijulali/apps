@@ -26,7 +26,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   Widget settingsPage(BuildContext context) {
     return Scaffold(
-      appBar: appBar(context),
+      appBar: appBar(context, showSearch: false),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: ListView(children: _widgetsTiles(context)),

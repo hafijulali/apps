@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="Apps"
+        android:label="apps"
         android:name="${applicationName}"
         android:icon="@mipmap/app_icon">
         <activity
@@ -30,8 +30,7 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
-  </application>
-    <uses-permission android:name="android.permission.INTERNET"/>
+    </application>
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility and
          https://developer.android.com/reference/android/content/Intent#ACTION_PROCESS_TEXT.
@@ -42,6 +41,5 @@
             <action android:name="android.intent.action.PROCESS_TEXT"/>
             <data android:mimeType="text/plain"/>
         </intent>
-  </queries>
-
+    </queries>
 </manifest>

@@ -8,7 +8,7 @@
 PRODUCT_NAME = apps
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.example.apps
+PRODUCT_BUNDLE_IDENTIFIER = dev.hafijul.apps
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2023 com.example. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2025 dev.hafijul. All rights reserved.

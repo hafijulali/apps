@@ -38,5 +38,5 @@ Future<void> initApp() async {
   cache = await Hive.openBox<dynamic>(cacheDatabaseFileName);
   settings =
       await Hive.openBox<dynamic>(BaseConstants().settingsDatabaseFileName);
-  gitlabToken = dotenv.get('GITLAB_TOKEN');
+  gitlabToken = dotenv.get('GITLAB_TOKEN', fallback: '');
 }
