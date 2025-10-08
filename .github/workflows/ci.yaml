@@ -33,7 +33,7 @@ jobs:
         run: echo "$DOTENV" > .env
       - run: flutter pub get
       - run: flutter build apk --release --obfuscate --split-per-abi --split-debug-info .debug
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: android-builds
           path: |
@@ -61,7 +61,7 @@ jobs:
       - run: flutter build linux --release --target-platform linux-x64
       - name: Archive build
         run: tar -czf apps-linux-x64.tar.gz -C build/linux/x64/release/bundle .
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: linux-build-x64
           path: apps-linux-x64.tar.gz
@@ -89,7 +89,7 @@ jobs:
       - run: flutter build linux --release --target-platform linux-arm64
       - name: Archive build
         run: tar -czf apps-linux-arm64.tar.gz -C build/linux/arm64/release/bundle .
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: linux-build-arm64
           path: apps-linux-arm64.tar.gz
@@ -110,7 +110,7 @@ jobs:
       - run: flutter build web --release
       - name: Archive build
         run: zip -r apps-web.zip build/web
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: web-build
           path: apps-web.zip
@@ -133,7 +133,7 @@ jobs:
       - name: Archive build
         shell: powershell
         run: Compress-Archive -Path build/windows/x64/runner/Release/* -DestinationPath apps-windows-x64.zip
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: windows-build-x64
           path: apps-windows-x64.zip
@@ -156,7 +156,7 @@ jobs:
       - name: Archive build
         shell: powershell
         run: Compress-Archive -Path build/windows/arm64/runner/Release/* -DestinationPath apps-windows-arm64.zip
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: windows-build-arm64
           path: apps-windows-arm64.zip
@@ -178,7 +178,7 @@ jobs:
       - run: flutter build macos --release
       - name: Archive build
         run: zip -r apps-macos.zip build/macos/Build/Products/Release/apps.app
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: macos-build
           path: apps-macos.zip
@@ -197,7 +197,7 @@ jobs:
         run: echo "$DOTENV" > .env
       - run: flutter pub get
       - run: flutter build ipa --release --no-codesign
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: ios-build
           path: build/ios/ipa/apps.ipa
