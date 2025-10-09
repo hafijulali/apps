@@ -1,9 +1,5 @@
-import 'dart:math';
-import 'dart:convert';
 import 'dart:typed_data';
-import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_ce/hive.dart';
 import 'package:dio/dio.dart';
 import '../model.dart';
 import '../init.dart'; // Import init.dart to access the cache box
@@ -14,7 +10,7 @@ class ProjectImage extends StatelessWidget {
   const ProjectImage({super.key, required this.project});
 
   Future<Uint8List?> _fetchAndCacheImage(String imageUrl) async {
-    final String cacheKey = 'image_' + imageUrl.hashCode.toString();
+    final String cacheKey = 'image_${imageUrl.hashCode}';
     debugPrint("Cache key generated: $cacheKey for URL: $imageUrl");
 
     if (cache?.containsKey(cacheKey) == true) {
@@ -55,9 +51,10 @@ class ProjectImage extends StatelessWidget {
         height: double.infinity,
         errorBuilder: (context, error, stackTrace) {
           debugPrint("Error loading asset image for ${project.name}: $error");
-          imageUrlToLoad = project.generatedImageUrl; // Fallback to generated Gravatar
+          imageUrlToLoad =
+              project.generatedImageUrl; // Fallback to generated Gravatar
           if (imageUrlToLoad != null) {
-            return _buildNetworkImage(imageUrlToLoad!); 
+            return _buildNetworkImage(imageUrlToLoad!);
           } else {
             return const SizedBox.shrink();
           }
@@ -68,7 +65,7 @@ class ProjectImage extends StatelessWidget {
     }
 
     if (imageUrlToLoad != null) {
-      return _buildNetworkImage(imageUrlToLoad!);
+      return _buildNetworkImage(imageUrlToLoad);
     }
 
     return const SizedBox.shrink(); // Should not happen
@@ -80,7 +77,9 @@ class ProjectImage extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError || !snapshot.hasData || snapshot.data == null) {
+        } else if (snapshot.hasError ||
+            !snapshot.hasData ||
+            snapshot.data == null) {
           debugPrint("Error displaying image $imageUrl: ${snapshot.error}");
           // Fallback to another random Gravatar on error - this should be rare now
           // as generatedImageUrl is stable and cached.

@@ -1,9 +1,6 @@
 import 'dart:math';
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
-import 'dart:math';
-import 'dart:convert';
-import 'package:crypto/crypto.dart';
 import 'package:apps/constants.dart';
 
 class Project {
@@ -26,7 +23,7 @@ class Project {
 
   factory Project.fromGitHub(Map<String, dynamic> json) {
     final String? imageUrl = null; // Always null to force Gravatar
-    final String? generatedImageUrl = _generateRandomGravatarUrl(json['name']);
+    final String generatedImageUrl = _generateRandomGravatarUrl(json['name']);
 
     return Project(
       id: json["id"].toString(),
@@ -40,16 +37,17 @@ class Project {
   }
   factory Project.fromGitLab(Map<String, dynamic> json) {
     final String? imageUrl = json['avatar_url'];
-    final String? generatedImageUrl = imageUrl == null ? _generateRandomGravatarUrl(json['name']) : null;
+    final String? generatedImageUrl =
+        imageUrl == null ? _generateRandomGravatarUrl(json['name']) : null;
 
     return Project(
-        id: json['id'].toString(),
-        name: json['name'],
-        description: json['description'],
-        source: json['web_url'],
-        image: imageUrl,
-        generatedImageUrl: generatedImageUrl,
-        demo: 'https://$username.gitlab.io/${json['name']}',
+      id: json['id'].toString(),
+      name: json['name'],
+      description: json['description'],
+      source: json['web_url'],
+      image: imageUrl,
+      generatedImageUrl: generatedImageUrl,
+      demo: 'https://$username.gitlab.io/${json['name']}',
     );
   }
 

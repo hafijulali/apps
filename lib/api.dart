@@ -81,9 +81,8 @@ Future<List<Project>> fetchProjects() async {
   return projects;
 }
 
-
 Future<String> fetchReadmeContent(String projectSourceUrl) async {
-  final String cacheKey = 'readme_' + projectSourceUrl.hashCode.toString();
+  final String cacheKey = 'readme_${projectSourceUrl.hashCode}';
   if (cache?.containsKey(cacheKey) == true) {
     debugPrint("Loading README from cache for $projectSourceUrl");
     return cache?.get(cacheKey);
@@ -104,26 +103,30 @@ Future<String> fetchReadmeContent(String projectSourceUrl) async {
       repo = match.group(2);
       debugPrint('GitHub Owner: $owner, Repo: $repo');
       // Try main branch first, then master
-      readmeUrl = 'https://raw.githubusercontent.com/$owner/$repo/main/README.md';
+      readmeUrl =
+          'https://raw.githubusercontent.com/$owner/$repo/main/README.md';
       try {
         debugPrint('Trying GitHub README URL (main): $readmeUrl');
         final response = await dio.get(readmeUrl);
         if (response.statusCode == 200) {
           debugPrint('GitHub README (main) fetched successfully.');
-          debugPrint('README Content (main branch):\n${response.data.substring(0, response.data.length > 500 ? 500 : response.data.length)}...'); // Print first 500 chars
+          debugPrint(
+              'README Content (main branch):\n${response.data.substring(0, response.data.length > 500 ? 500 : response.data.length)}...'); // Print first 500 chars
           await cache?.put(cacheKey, response.data);
           return response.data;
         }
       } catch (e) {
         debugPrint('Error fetching GitHub README from main branch: $e');
       }
-      readmeUrl = 'https://raw.githubusercontent.com/$owner/$repo/master/README.md';
+      readmeUrl =
+          'https://raw.githubusercontent.com/$owner/$repo/master/README.md';
       try {
         debugPrint('Trying GitHub README URL (master): $readmeUrl');
         final response = await dio.get(readmeUrl);
         if (response.statusCode == 200) {
           debugPrint('GitHub README (master) fetched successfully.');
-          debugPrint('README Content (master branch):\n${response.data.substring(0, response.data.length > 500 ? 500 : response.data.length)}...'); // Print first 500 chars
+          debugPrint(
+              'README Content (master branch):\n${response.data.substring(0, response.data.length > 500 ? 500 : response.data.length)}...'); // Print first 500 chars
           await cache?.put(cacheKey, response.data);
           return response.data;
         }
@@ -145,7 +148,8 @@ Future<String> fetchReadmeContent(String projectSourceUrl) async {
         final response = await dio.get(readmeUrl);
         if (response.statusCode == 200) {
           debugPrint('GitLab README (main) fetched successfully.');
-          debugPrint('README Content (main branch):\n${response.data.substring(0, response.data.length > 500 ? 500 : response.data.length)}...'); // Print first 500 chars
+          debugPrint(
+              'README Content (main branch):\n${response.data.substring(0, response.data.length > 500 ? 500 : response.data.length)}...'); // Print first 500 chars
           await cache?.put(cacheKey, response.data);
           return response.data;
         }
@@ -158,7 +162,8 @@ Future<String> fetchReadmeContent(String projectSourceUrl) async {
         final response = await dio.get(readmeUrl);
         if (response.statusCode == 200) {
           debugPrint('GitLab README (master) fetched successfully.');
-          debugPrint('README Content (master branch):\n${response.data.substring(0, response.data.length > 500 ? 500 : response.data.length)}...'); // Print first 500 chars
+          debugPrint(
+              'README Content (master branch):\n${response.data.substring(0, response.data.length > 500 ? 500 : response.data.length)}...'); // Print first 500 chars
           await cache?.put(cacheKey, response.data);
           return response.data;
         }
@@ -174,7 +179,8 @@ Future<String> fetchReadmeContent(String projectSourceUrl) async {
       final response = await dio.get(readmeUrl);
       if (response.statusCode == 200) {
         debugPrint('README (fallback) fetched successfully.');
-        debugPrint('README Content (fallback):\n${response.data.substring(0, response.data.length > 500 ? 500 : response.data.length)}...'); // Print first 500 chars
+        debugPrint(
+            'README Content (fallback):\n${response.data.substring(0, response.data.length > 500 ? 500 : response.data.length)}...'); // Print first 500 chars
         await cache?.put(cacheKey, response.data);
         return response.data;
       }

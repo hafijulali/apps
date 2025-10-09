@@ -45,7 +45,8 @@ class ModernSearchBar extends StatelessWidget {
             final descriptionLower = project.description?.toLowerCase() ?? '';
             final queryLower = query.toLowerCase();
             debugPrint('Searching for: "$queryLower"');
-            debugPrint('Checking project: ${project.name} (Name: "$nameLower", Description: "$descriptionLower")');
+            debugPrint(
+                'Checking project: ${project.name} (Name: "$nameLower", Description: "$descriptionLower")');
             final bool matches = nameLower.contains(queryLower) ||
                 descriptionLower.contains(queryLower);
             debugPrint('Project ${project.name} matches: $matches');
