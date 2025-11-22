@@ -24,7 +24,7 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
   @override
   void initState() {
     super.initState();
-    _readmeContentFuture = fetchReadmeContent(widget.project.source);
+    _readmeContentFuture = fetchReadmeContent(widget.project);
   }
 
   @override

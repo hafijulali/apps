@@ -81,113 +81,68 @@ Future<List<Project>> fetchProjects() async {
   return projects;
 }
 
-Future<String> fetchReadmeContent(String projectSourceUrl) async {
-  final String cacheKey = 'readme_${projectSourceUrl.hashCode}';
+Future<String> fetchReadmeContent(Project project) async {
+  final String cacheKey = 'readme_${project.source.hashCode}';
   if (cache?.containsKey(cacheKey) == true) {
-    debugPrint("Loading README from cache for $projectSourceUrl");
+    debugPrint("Loading README from cache for ${project.source}");
     return cache?.get(cacheKey);
   }
 
   final Dio dio = Dio();
   String? owner;
   String? repo;
-  String readmeUrl = '';
 
-  debugPrint('Fetching README for: $projectSourceUrl');
+  debugPrint('Fetching README for: ${project.source}');
 
-  if (projectSourceUrl.contains('github.com')) {
+  if (project.source.contains('github.com')) {
     final githubRegex = RegExp(r'github\.com/([^/]+)/([^/]+)');
-    final match = githubRegex.firstMatch(projectSourceUrl);
+    final match = githubRegex.firstMatch(project.source);
     if (match != null && match.groupCount >= 2) {
       owner = match.group(1);
       repo = match.group(2);
       debugPrint('GitHub Owner: $owner, Repo: $repo');
-      // Try main branch first, then master
-      readmeUrl =
-          'https://raw.githubusercontent.com/$owner/$repo/main/README.md';
-      try {
-        debugPrint('Trying GitHub README URL (main): $readmeUrl');
-        final response = await dio.get(readmeUrl);
-        if (response.statusCode == 200) {
-          debugPrint('GitHub README (main) fetched successfully.');
-          debugPrint(
-              'README Content (main branch):\n${response.data.substring(0, response.data.length > 500 ? 500 : response.data.length)}...'); // Print first 500 chars
-          await cache?.put(cacheKey, response.data);
-          return response.data;
+      for (var branch in ['main', 'master']) {
+        final readmeUrl =
+            'https://raw.githubusercontent.com/$owner/$repo/$branch/README.md';
+        try {
+          debugPrint('Trying GitHub README URL ($branch): $readmeUrl');
+          final response = await dio.get(readmeUrl);
+          if (response.statusCode == 200) {
+            debugPrint('GitHub README ($branch) fetched successfully.');
+            await cache?.put(cacheKey, response.data);
+            return response.data;
+          }
+        } catch (e) {
+          debugPrint('Error fetching GitHub README from $branch branch: $e');
         }
-      } catch (e) {
-        debugPrint('Error fetching GitHub README from main branch: $e');
-      }
-      readmeUrl =
-          'https://raw.githubusercontent.com/$owner/$repo/master/README.md';
-      try {
-        debugPrint('Trying GitHub README URL (master): $readmeUrl');
-        final response = await dio.get(readmeUrl);
-        if (response.statusCode == 200) {
-          debugPrint('GitHub README (master) fetched successfully.');
-          debugPrint(
-              'README Content (master branch):\n${response.data.substring(0, response.data.length > 500 ? 500 : response.data.length)}...'); // Print first 500 chars
-          await cache?.put(cacheKey, response.data);
-          return response.data;
-        }
-      } catch (e) {
-        debugPrint('Error fetching GitHub README from master branch: $e');
       }
     }
-  } else if (projectSourceUrl.contains('gitlab.com')) {
-    final gitlabRegex = RegExp(r'gitlab\.com/([^/]+)/([^/]+)');
-    final match = gitlabRegex.firstMatch(projectSourceUrl);
-    if (match != null && match.groupCount >= 2) {
-      owner = match.group(1);
-      repo = match.group(2);
-      debugPrint('GitLab Owner: $owner, Repo: $repo');
-      // Try main branch first, then master
-      readmeUrl = 'https://gitlab.com/$owner/$repo/-/raw/main/README.md';
+  } else if (project.source.contains('gitlab.com')) {
+    debugPrint('GitLab Project ID: ${project.id}');
+    for (var branch in ['main', 'master']) {
+      final readmeUrl =
+          'https://gitlab.com/api/v4/projects/${project.id}/repository/files/README.md?ref=$branch';
       try {
-        debugPrint('Trying GitLab README URL (main): $readmeUrl');
-        final response = await dio.get(readmeUrl);
+        debugPrint('Trying GitLab README API URL ($branch): $readmeUrl');
+        final response = await dio.get(
+          readmeUrl,
+          options: Options(
+              headers: <String, String>{'Authorization': 'Bearer $gitlabToken'}),
+        );
         if (response.statusCode == 200) {
-          debugPrint('GitLab README (main) fetched successfully.');
-          debugPrint(
-              'README Content (main branch):\n${response.data.substring(0, response.data.length > 500 ? 500 : response.data.length)}...'); // Print first 500 chars
-          await cache?.put(cacheKey, response.data);
-          return response.data;
+          debugPrint('GitLab README ($branch) fetched successfully via API.');
+          final content = response.data['content'];
+          final decodedContent = utf8.decode(base64.decode(content));
+          await cache?.put(cacheKey, decodedContent);
+          return decodedContent;
         }
       } catch (e) {
-        debugPrint('Error fetching GitLab README from main branch: $e');
-      }
-      readmeUrl = 'https://gitlab.com/$owner/$repo/-/raw/master/README.md';
-      try {
-        debugPrint('Trying GitLab README URL (master): $readmeUrl');
-        final response = await dio.get(readmeUrl);
-        if (response.statusCode == 200) {
-          debugPrint('GitLab README (master) fetched successfully.');
-          debugPrint(
-              'README Content (master branch):\n${response.data.substring(0, response.data.length > 500 ? 500 : response.data.length)}...'); // Print first 500 chars
-          await cache?.put(cacheKey, response.data);
-          return response.data;
-        }
-      } catch (e) {
-        debugPrint('Error fetching GitLab README from master branch: $e');
+        debugPrint(
+            'Error fetching GitLab README from $branch branch via API: $e');
       }
     }
   }
 
-  if (readmeUrl.isNotEmpty) {
-    try {
-      debugPrint('Trying README URL (fallback): $readmeUrl');
-      final response = await dio.get(readmeUrl);
-      if (response.statusCode == 200) {
-        debugPrint('README (fallback) fetched successfully.');
-        debugPrint(
-            'README Content (fallback):\n${response.data.substring(0, response.data.length > 500 ? 500 : response.data.length)}...'); // Print first 500 chars
-        await cache?.put(cacheKey, response.data);
-        return response.data;
-      }
-    } catch (e) {
-      debugPrint('Error fetching README (fallback): $e');
-    }
-  }
-  debugPrint('README not found for $projectSourceUrl');
+  debugPrint('README not found for ${project.source}');
   return '# README not found\n\nCould not find a README.md for this project.';
 }
