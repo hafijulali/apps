@@ -31,7 +31,7 @@ Future<List<Project>> fetchProjects() async {
 
   try {
     final Response<dynamic> githubResponse = await dio.get(
-      'https://api.github.com/users/${dotenv.get('username', fallback: '')}/repos',
+      'https://api.github.com/users/hafijulali/repos',
       queryParameters: <String, dynamic>{'per_page': 10, 'sort': 'updated'},
     );
     github =
@@ -126,8 +126,9 @@ Future<String> fetchReadmeContent(Project project) async {
         debugPrint('Trying GitLab README API URL ($branch): $readmeUrl');
         final response = await dio.get(
           readmeUrl,
-          options: Options(
-              headers: <String, String>{'Authorization': 'Bearer $gitlabToken'}),
+          options: Options(headers: <String, String>{
+            'Authorization': 'Bearer $gitlabToken'
+          }),
         );
         if (response.statusCode == 200) {
           debugPrint('GitLab README ($branch) fetched successfully via API.');
