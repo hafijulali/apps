@@ -154,7 +154,7 @@ build-ios: clean install ## Build iOS app
 
 build-web: clean install ## Build web app
 	@echo "$(INFO)[INFO]$(RESET) Building $(APP_NAME) for web..."
-	@flutter build web
+	@flutter build web --release --wasm -O4
 
 build-linux: clean install ## Build Linux app
 	@echo "$(INFO)[INFO]$(RESET) Building $(APP_NAME) for Linux..."

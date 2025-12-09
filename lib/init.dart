@@ -16,6 +16,7 @@ String gitlabToken = '';
 String username = '';
 String appVersion = '';
 String appThemeMode = 'System';
+bool disableCache = kDebugMode;
 
 bool openLinksInNewTab =
     settings?.get(openLinksInNewTabSettingsKey, defaultValue: false) ?? false;

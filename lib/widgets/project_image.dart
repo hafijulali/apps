@@ -13,7 +13,7 @@ class ProjectImage extends StatelessWidget {
     final String cacheKey = 'image_${imageUrl.hashCode}';
     debugPrint("Cache key generated: $cacheKey for URL: $imageUrl");
 
-    if (cache?.containsKey(cacheKey) == true) {
+    if (!disableCache && cache?.containsKey(cacheKey) == true) {
       debugPrint("Cache hit! Loading image from cache for key: $cacheKey");
       return cache?.get(cacheKey) as Uint8List?;
     }

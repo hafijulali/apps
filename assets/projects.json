@@ -42,9 +42,9 @@
   {
     "id": 6,
     "name": "2048 Game",
-    "description": "Popular 2048 Game written in python and PySimpleGUI as ui library.",
+    "description": "Popular 2048 Game written in python and nextjs web frontend",
     "image": "2048-game.png",
-    "demo": "",
+    "demo": "https://2048.hafijul.com",
     "source": "https://gitlab.com/hafijulali/2048-game"
   },
   {
@@ -60,7 +60,7 @@
     "name": "Resumify",
     "description": "Create your resume, just by filling a few details.",
     "image": "resumify.png",
-    "demo": "",
+    "demo": "https://resumify.hafijul.com",
     "source": "https://gitlab.com/hafijulali/resumify"
   },
   {
@@ -76,7 +76,7 @@
     "name": "Tic Tac Toe Game",
     "description": "Popular Tic Tac Toe Game written in python and PySimpleGUI as ui library.",
     "image": "tic-tac-toe-game.png",
-    "demo": "",
+    "demo": "https://tttg.hafijul.com",
     "source": "https://gitlab.com/hafijulali/tic-tac-toe-game"
   },
   {
@@ -88,19 +88,11 @@
     "source": "https://gitlab.com/hafijulali/cli-todo-app"
   },
   {
-    "id": 12,
-    "name": "Obstacle Avoiding Robot",
-    "description": "Sodshihsdfihs",
-    "image": "obstacle-avoiding-robot.png",
-    "demo": "https://obstacle-avoiding-robot.gitlab.io/website/",
-    "source": "https://gitlab.com/obstacle-avoiding-robot/firmware"
-  },
-  {
     "id": 13,
     "name": "Greeter",
     "description": "A dynamic greetings generator app to greet others on different events.",
     "image": "greeter.png",
-    "demo": "",
+    "demo": "https://greeter.hafijul.com",
     "source": "https://gitlab.com/hafijulali/greeter"
   },
   {
@@ -112,19 +104,11 @@
     "source": "https://gitlab.com/hafijulali/flames-game"
   },
   {
-    "id": 15,
-    "name": "Biped Robot",
-    "description": "A dynamic greetings generator app to greet others on different events.",
-    "image": "biped-robot.png",
-    "demo": "",
-    "source": "https://gitlab.com/biped-robot/firmware"
-  },
-  {
     "id": 16,
     "name": "GuessMe",
     "description": "A simple number guessing game based on binary search approach.",
     "image": "guess-me.png",
-    "demo": "",
+    "demo": "https://hafijulali.gitlab.io/guess-me",
     "source": "https://gitlab.com/hafijulali/guess-me"
   }
 ]

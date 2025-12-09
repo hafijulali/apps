@@ -15,7 +15,7 @@ Future<List<dynamic>> getLocalData() async {
 void setupCacheExpiry({int durationMinutes = 5}) {
   Timer.periodic(Duration(minutes: durationMinutes), (timer) async {
     int currentTime = DateTime.now().millisecondsSinceEpoch;
-    if (cache?.get(dataEntryCacheDatabaseKey) < currentTime) {
+    if (!disableCache && cache?.get(dataEntryCacheDatabaseKey) < currentTime) {
       await cache?.delete(projectsCacheDatabasekey);
     }
   });

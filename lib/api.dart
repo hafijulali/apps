@@ -13,7 +13,7 @@ import 'model.dart';
 Future<List<Project>> fetchProjects() async {
   List<Project> projects = <Project>[];
 
-  if (cache?.containsKey(projectsCacheDatabasekey) == true) {
+  if (!disableCache && cache?.containsKey(projectsCacheDatabasekey) == true) {
     debugPrint("Loading data from cache");
     final List<dynamic> cachedData =
         jsonDecode(cache?.get(projectsCacheDatabasekey));
@@ -83,7 +83,7 @@ Future<List<Project>> fetchProjects() async {
 
 Future<String> fetchReadmeContent(Project project) async {
   final String cacheKey = 'readme_${project.source.hashCode}';
-  if (cache?.containsKey(cacheKey) == true) {
+  if (!disableCache && cache?.containsKey(cacheKey) == true) {
     debugPrint("Loading README from cache for ${project.source}");
     return cache?.get(cacheKey);
   }
