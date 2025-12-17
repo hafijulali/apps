@@ -26,6 +26,7 @@ String webWindowName = '_self';
 
 Future<void> initApp() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
   if (!kIsWeb) {
     databaseFilePath = (await getApplicationDocumentsDirectory()).path;
     debugPrint('Hive database file path: $databaseFilePath');
@@ -33,7 +34,6 @@ Future<void> initApp() async {
     webWindowName = '';
   }
   webWindowName = openLinksInNewTab ? '_blank' : webWindowName;
-  await dotenv.load(fileName: ".env");
   Hive.init(databaseFilePath);
   setupCacheExpiry(durationMinutes: 5);
   BaseConstants().currentPageRoute = BaseConstants().homePageRoute;
@@ -41,5 +41,5 @@ Future<void> initApp() async {
   cache = await Hive.openBox<dynamic>(cacheDatabaseFileName);
   settings =
       await Hive.openBox<dynamic>(BaseConstants().settingsDatabaseFileName);
-  gitlabToken = dotenv.get('gitlabToken', fallback: '');
+  gitlabToken = dotenv.get('GITLAB_TOKEN', fallback: '');
 }
