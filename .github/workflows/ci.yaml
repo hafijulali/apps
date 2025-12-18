@@ -325,6 +325,9 @@ jobs:
         build_web,
       ]
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
       - name: Get version from tag
         id: get_version
         run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
