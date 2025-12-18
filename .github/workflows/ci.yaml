@@ -145,18 +145,8 @@ jobs:
       - name: Ensure secrets
         shell: bash
         env:
-          KEY: ${{ secrets.KEY }}
-          PROP: ${{ secrets.PROP }}
           ENV: ${{ secrets.ENV }}
         run: |
-          cat << EOF > android/key.properties
-          ${{ secrets.PROP }}
-          EOF
-
-          cat << EOF | base64 -d > android/android-prod.keystore
-          ${{ secrets.KEY }}
-          EOF
-
           cat << EOF > .env
           ${{ secrets.ENV }}
           EOF
@@ -229,6 +219,8 @@ jobs:
         run: tar -czf ${{ env.APP_NAME }}-linux-x64.tar.gz -C build/linux/x64/release/bundle .
       - name: Upload Linux Artifacts
         uses: actions/upload-artifact@v4
+        env:
+          APP_NAME: ${{ needs.setup.outputs.app_name }}
         with:
           name: linux-build-x64
           path: ${{ env.APP_NAME }}-linux-x64.tar.gz
@@ -268,6 +260,8 @@ jobs:
         run: zip -r ${{ env.APP_NAME }}-macos.zip build/macos/Build/Products/Release/${{ env.APP_NAME }}.app
       - name: Upload macOS Artifacts
         uses: actions/upload-artifact@v4
+        env:
+          APP_NAME: ${{ needs.setup.outputs.app_name }}
         with:
           name: macos-build
           path: ${{ env.APP_NAME }}-macos.zip
@@ -308,6 +302,8 @@ jobs:
         run: Compress-Archive -Path build/windows/x64/runner/Release/* -DestinationPath ${{ env.APP_NAME }}-windows-x64.zip
       - name: Upload Windows Artifacts
         uses: actions/upload-artifact@v4
+        env:
+          APP_NAME: ${{ needs.setup.outputs.app_name }}
         with:
           name: windows-build-x64
           path: ${{ env.APP_NAME }}-windows-x64.zip
